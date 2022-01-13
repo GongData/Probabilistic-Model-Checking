@@ -1,0 +1,89 @@
+const double T; 
+const double T1; 
+const double T2; 
+const double T3; 
+const double W1;
+const double W2;
+
+P>=0.9[F<=T1 (CyclinD >=500) ] //50
+P>=0.9[F<=T2 (Abeta >=300) ]  //50
+
+P>=0.9[F<=T (P53/1000 >=10) ]  //20 true
+P>=0.9[G[T1,T2] (P53/1000 >=10) ]  // [20,25] true
+
+P>=0.9[F<=T1 (P53/1000 <1) ]   //80 true
+P>=0.9[F<=T1 (P53/1000 <=1 & MDM2p/1000 >= 10) ]   //80 true
+P>=0.9[G[T1,T2] (P53/1000 <=2 & MDM2p/1000 >= 10) ]  // [80 100] true
+
+P>=0.9[F[T1,T2] (P53/1000 <=1) ]  // 80, 100 true
+P>=0.9[G[T1,T2] (P53/1000 <5) ]  // 50, 60 true
+P>=0.9[G[T1,T2] (P53/1000 <2) ]  // 60, 100 true
+P>=0.9[F<=T G[T1,T2] (P53/1000 <2) ]  //
+
+
+P>=0.9[F<=T (NFkBn/1000 >=0.5) ]   // 30 true
+P>=0.9[F[T1,T2] (NFkBn/1000 >=0.5) ] // 0 25 true
+P>=0.9[G[T1,T2] (NFkBn/1000 >=0.5) ] // 15 25 false, oscillation
+
+P>=0.9[F<=T (NFkBn/1000 <=0.35) ]   //90 true
+P>=0.9[F[T1,T2] (NFkBn/1000 <=0.35) ]  // [60 80] true can find domain
+P>=0.9[G[T1,T2] (NFkBn/1000 <=0.35) ] // [80 100] // false oscillation
+
+
+
+P=?[F<=T1 (CyclinD >=500) ] //
+P=?[F<=T2 (Abeta >=300) ]  //
+
+P=?[F<=30 (CyclinD >=500) ] //
+P=?[F<=30 (Abeta >=300) ]  //
+P=?[F<=35 (CyclinD >=500) ] //
+P=?[F<=35 (Abeta >=300) ]  //
+P=?[F<=40 (CyclinD >=500) ] //
+P=?[F<=40 (Abeta >=300) ]  //
+P=?[F<=45 (CyclinD >=500) ] //
+P=?[F<=45 (Abeta >=300) ]  //
+P=?[F<=50 (CyclinD >=500) ] //
+P=?[F<=50 (Abeta >=300) ]  //
+P=?[F<=60 (CyclinD >=500) ] //
+P=?[F<=60 (Abeta >=300) ]  //
+
+
+P=?[F<=T1 (P53/1000 >=10) ]  //
+P=?[G[20,25] (P53/1000 >=W1) ]  // 
+P=?[G[80,100] (P53/1000 <=W2 & MDM2p/1000 >= 10) ]  
+P=?[F<=80 (P53/1000 <=W2 & MDM2p/1000 >= 10) ]  
+
+P=?[F<=20 (P53/1000 >=W1) ]  //
+
+
+P=?[G[80,100] (MDM2p/1000 >= 10) ]  // [80 100] true
+P=?[F<=80 (MDM2p/1000 >= 10) ]  // [80 100] true
+
+P=?[G[80,100] (P53/1000 <=W2 & MDM2p/1000 >= W1)]/P=?[G[80,100] (MDM2p/1000 >= 10) ] 
+
+
+
+P=?[F<=T (NFkBn/1000 >=0.5) ]   // 30 true
+P=?[F[60,T1] (NFkBn/1000 <=0.35) ]  // [60 80] true can find domain
+P=?[G[80, 100] (NFkBn/1000 <=W2) ] // [80 100] // false oscillation
+
+
+
+P=?[F<=T (NFkBn/(NFkB+NFkBn) >0.65) ]
+P=?[G[T1,T2] (NFkBn/(NFkB+NFkBn) >0.65) ]
+
+P=?[F<=30 (NFkBn/1000 >=W1) ]   // 30 true
+
+P=?[F<=30 (NFkBn/1000 >=0.55) & (F<=60 (NFkBn/1000 <=0.35))]   // 30 true
+
+P=?[F[60,80] (NFkBn/1000 <=W2) ]  // [60 80] true can find domain
+P=?[G[80, 100] (NFkBn/1000 <=W2) ] // [80 100] // false oscillation
+
+P=?[F<=30 (NFkBn/1000 >=0.5) ]   // change IKK
+P=?[F[60,80] (NFkBn/1000 <=0.35) ]  // change IKK
+P=?[G[80, 100] (NFkBn/1000 <=0.35) ] // change IKK
+
+
+
+
+

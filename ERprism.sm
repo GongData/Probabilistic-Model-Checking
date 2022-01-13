@@ -1,0 +1,237 @@
+ctmc
+
+const int N=10000;
+const int N0;  //IKK value 10000
+const int M=1000;
+const int NP53=1000;
+const int NM = 1000;
+const int NMp = 1000;
+const int K = 20000;
+const int NI = 1000;
+
+const double k1=1/pow(10,6);  // S12P process ATF6
+const double d1=2/pow(10,2);  //ATF6f deactivate
+const double k2=2/pow(10,5);   //ATF6f activate XBP1
+const double d2=1.6/pow(10,3);  //XBP1a deactivate
+const double k3=300;    		// XBP1a produce cMYC
+const double d3=1.5/pow(10,2);   //cMYC degrade
+const double k4=300;		//cMYC produce CyclinD
+
+
+const double d4=3/pow(10,2);	// CyclinD degrade
+
+const double k5=2/pow(10,5);	//IRE1 activate TRAF2
+const double d5=2/pow(10,2);	//TRAF2a deactivate
+const double k6=1/pow(10,7); 	// TRAF2a activate ASK1
+const double d6=9.0/pow(10,3);	//ASK1a deactivate
+const double k7=4.0/pow(10,7); 	// ASK1a activate JNK
+const double d7=1.8/pow(10,3);	// JNKa deactivate
+
+const double k8=650;		// JNKa produce BACE1
+const double k8p=650;		//NFkB generate BACE1
+const double k8pp=190;		//NFkB generate P53
+
+
+const double d8=1/pow(10,3);	//BACE1 degrade
+
+const double k9=1800; 		//BACE1 generate Abeta
+
+const double d9=8/pow(10,2);	//Abeta degrade
+
+const double k10=3.2/pow(10,4);	//TRAF2a activate IKK
+const double d10=1.2/pow(10,3);	// IKKa deactivate
+const double d10p=2/pow(10,4); //A20 deactivate IKKa
+
+
+
+
+const double k11=1.6/pow(10,4);   //IKKa disassemble IkB-NFkB 
+
+const double d11=1/pow(10,3);	//NFkBn bind with IkB
+
+
+const double k12=1.4;  // NFkB move to nucleus
+
+const double d12=2.5/pow(10,2);  //IkB degrade
+
+const double d12a=4/pow(10,2);  //A20 degrade
+
+const double k13=800;		// NFkB generate A20
+const double k13p=800;		// NFkB generate IkBt
+
+
+const double k14=900;		// NFkBn generate CyclinD
+
+
+
+
+const double k15=2/pow(10,5);	//PERK activate eIF2a
+const double d15=2/pow(10,2);   // eIF2ap deactivate
+
+const double k16=2/pow(10,5);   // eIF2af activate ATF4
+const double d16=1.6/pow(10,3);  //ATF4a deactivate
+const double k17=3.0/pow(10,6);   // ATF4a activate GADD343
+const double d17=3.5/pow(10,5);   //GADD34a deactivate
+
+const double k18=1.2/pow(10,7);   // GADD34a deactivate AKT 
+const double k18p=1.2/pow(10,8);   // IKKa activate AKT
+
+const double d18=1.2/pow(10,2);   // AKTp deactivate
+const double k19=2/pow(10,3);	// AKTp activate MDM2
+
+const double d19=4/pow(10,2);	// MDM2p dephosprhorylation
+const double d19p=3/pow(10,3);	// MDM2 degrade
+
+const double d19pp=2.2/pow(10,2);	// MDM2p degrade
+
+const double k20=1.2/pow(10,4);  //MDM2p deactivate P53
+
+const double d20=1200;	//P53 genesis
+const double k21=3;		//P53 generate MDM2t
+
+
+const double d21=1/pow(10,2);	///P53 degrade
+
+const double t12=0.08;
+
+const double k22=30;
+
+const double d22=0.0028; 	// MDM2t degrade
+
+module ER
+	ATF6: [0..N] init M;
+	S12P: [0..N] init M;
+
+	ATF6f: [0..N] init 0;
+	XBP1: [0..N] init N;
+	XBP1a: [0..N] init 0;
+	cMYC: [0..N] init 0;
+	CyclinD: [0..N] init 0;
+
+	IRE1: [0..M] init M;
+	TRAF2: [0..N] init N;
+	TRAF2a: [0..N] init 0;
+	IKK:[0..N0] init N0;
+	IKKa: [0..N] init 0;
+	IkB: [0..N] init 0;
+	NFkB: [0..N] init 0;
+	NFkBn: [0..N] init 0;
+	IkBNFkB: [0..N] init NI;
+	A20: [0..N] init 0;
+	A20t: [0..N] init 0;
+	IkBt: [0..N] init 0;
+
+
+	ASK1: [0..N] init N;
+	ASK1a: [0..N] init 0;
+	JNK: [0..N] init N;
+	JNKa: [0..N] init 0;
+	BACE1: [0..N] init 0;
+	Abeta: [0..N] init 0;
+
+	PERK: [0..M] init M;
+	elF2a: [0..N] init N;
+	elF2ap: [0..N] init 0;
+	ATF4: [0..N] init N;
+	ATF4a: [0..N] init 0;
+	GADD34: [0..N] init N;
+	GADD34a: [0..N] init 0;
+	AKT: [0..N] init N;
+	AKTp: [0..N] init 0;
+	MDM2: [0..N] init NM;
+	MDM2p: [0..N] init NMp;
+	P53: [0..N] init NP53;
+	MDM2t: [0..N] init 0;
+
+
+
+	[]ATF6>0 & S12P>0  -> k1*ATF6*S12P: (ATF6'=ATF6-1) & (ATF6f'=ATF6f+1) & (S12P'=S12P);
+	[]ATF6f>0 -> d1*ATF6f: (ATF6'=ATF6+1) & (ATF6f'=ATF6f-1);
+
+	[]ATF6f>0 & XBP1>0 -> k2*ATF6f*XBP1: (XBP1a'=XBP1a+1) & (XBP1'=XBP1-1) & (ATF6f'=ATF6f);
+	[]XBP1a>0 -> d2*XBP1a: (XBP1a'=XBP1a-1) & (XBP1'=XBP1+1);
+
+	[]XBP1a>0  -> k3*XBP1a/(K+XBP1a): (cMYC'=cMYC+1) & (XBP1a'=XBP1a);
+	[]cMYC>0  -> d3*cMYC: (cMYC'=cMYC-1) ;
+
+	[]cMYC>0  -> k4*cMYC/(K+cMYC): (cMYC'=cMYC) & (CyclinD'=CyclinD +1);
+	[]CyclinD>0  -> d4*CyclinD: (CyclinD'=CyclinD -1) ;
+
+	[]IRE1>0 & TRAF2>0 -> k5*IRE1*TRAF2: (TRAF2a'=TRAF2a+1) & (TRAF2'=TRAF2-1);
+	[]TRAF2a>0 -> d5*TRAF2a: (TRAF2a'=TRAF2a-1) & (TRAF2'=TRAF2+1);
+
+	[]TRAF2a>0 & ASK1>0 -> k6*TRAF2a*ASK1: (ASK1a'=ASK1a+1) & (ASK1'=ASK1-1);
+	[]ASK1a>0 -> d6*ASK1a: (ASK1a'=ASK1a-1) & (ASK1'=ASK1+1);
+
+	[]ASK1a>0 & JNK>0 -> k7*ASK1a*JNK: (JNKa'=JNKa+1) & (JNK'=JNK-1);
+	[]JNKa>0 -> d7*JNKa: (JNKa'=JNKa-1) & (JNK'=JNK+1);
+
+	[]JNKa>0 -> k8*JNKa/(K+JNKa): (BACE1'=BACE1+1) & (JNKa'=JNKa);
+	[]NFkBn>0 -> k8p*NFkBn/(K+NFkBn): (BACE1'=BACE1+1);
+	[]BACE1>0 -> d8*BACE1: (BACE1'=BACE1-1);
+
+	[]BACE1>0  -> k9*BACE1/(K+BACE1): (Abeta'=Abeta+1);
+	[]Abeta>0  -> d9*Abeta: (Abeta'=Abeta-1);
+
+	[]TRAF2a>0 & IKK>0 -> k10*TRAF2a*IKK: (IKKa'=IKKa+1) & (IKK'=IKK-1);
+
+
+	[]IKKa>0 -> d10*IKKa: (IKKa'=IKKa-1) & (IKK'=IKK+1);
+	[]A20>0 & IKKa>0 -> d10p*IKKa*A20: (IKKa'=IKKa-1) & (IKK'=IKK+1);
+
+
+	[]IkBNFkB>0 & IKKa >0 -> k11*IKKa*IkBNFkB: (IkB'=IkB+1) & (NFkB'=NFkB+1) & (IkBNFkB'=IkBNFkB-1);
+	[]NFkBn>0 & IkB >0 -> d11*IkB*NFkBn: (IkB'=IkB-1) & (NFkBn'=NFkBn-1) & (IkBNFkB'=IkBNFkB+1);
+
+	[]NFkB>0 -> k12*NFkB: (NFkB'=NFkB-1) & (NFkBn'=NFkBn+1);
+	[]NFkBn>0 -> k13*NFkBn/(K+NFkBn): (A20t'=A20t+1) & (NFkBn'=NFkBn);
+	[]A20>0 -> d12a*A20: (A20'=A20-1);
+	[]A20t>0 -> d12a*A20t: (A20t'=A20t-1);
+
+
+	[]NFkBn>0 -> k13p*NFkBn/(K+NFkBn): (IkBt'=IkBt+1) & (NFkBn'=NFkBn);
+
+	[]IkBt>0 -> d12*IkBt: (IkBt'=IkBt-1);
+	[]IkB>0 -> d12*IkB: (IkB'=IkB-1);
+
+	[]IkBt>0 -> t12*IkBt: (IkB'=IkB+1);
+	[]A20t>0 -> t12*A20t: (A20'=A20+1);
+
+	[]NFkBn>0 -> k14*NFkBn/(K+NFkBn): (CyclinD'=CyclinD+1) & (NFkBn'=NFkBn);
+
+
+	[]PERK>0 & elF2a>0 -> k15*PERK*elF2a: (elF2ap'=elF2ap+1) & (elF2a'=elF2a-1);
+	[]elF2ap>0 -> d15*elF2ap: (elF2ap'=elF2ap-1) & (elF2a'=elF2a+1);
+
+
+	[]elF2ap>0 & ATF4>0 -> k16*elF2ap*ATF4: (ATF4a'=ATF4a+1) & (ATF4'=ATF4-1);
+	[]ATF4a>0 -> d16*ATF4a: (ATF4a'=ATF4a-1) & (ATF4'=ATF4+1);
+
+
+	[]ATF4a>0 & GADD34>0 -> k17*ATF4a*GADD34: (GADD34a'=GADD34a+1) & (GADD34'=GADD34-1);
+	[]GADD34a>0 -> d17*GADD34a: (GADD34a'=GADD34a-1) & (GADD34'=GADD34+1);
+
+	[]AKTp>0 & GADD34a>0 -> k18*AKTp*GADD34a: (AKT'=AKT+1) & (AKTp'=AKTp-1);
+	[]AKT>0 & IKKa>0 -> k18p*AKT*IKKa: (AKT'=AKT-1) & (AKTp'=AKTp+1);
+	[]AKTp>0  -> d18*AKTp: (AKT'=AKT+1) & (AKTp'=AKTp-1);
+
+	[]AKTp>0 & MDM2>0 -> k19*AKTp*MDM2: (MDM2'=MDM2-1) & (MDM2p'=MDM2p+1);
+	[]MDM2p>0  -> d19*MDM2p: (MDM2'=MDM2+1) & (MDM2p'=MDM2p-1);
+
+	[]MDM2p>0  -> d19pp*MDM2p: (MDM2p'=MDM2p-1);
+	[]MDM2>0  -> d19p*MDM2: (MDM2'=MDM2-1);
+
+	[]P53>0 & MDM2p>0 -> k20*MDM2p*P53: (P53'=P53-1);
+	[]P53>=0  -> d20: (P53'=P53+1);
+	[]P53>0  -> k21*pow(P53,2)/(pow(K,2)+pow(P53,2)): (MDM2t'=MDM2t+1);
+	[]MDM2t>0 -> k22*MDM2t: (MDM2'=MDM2+1);
+	[]MDM2t>0 -> d22*MDM2t: (MDM2t'=MDM2t-1);
+
+
+	[]P53>0  -> d21*P53: (P53'=P53-1);
+	[]NFkBn>0 -> k8pp*NFkBn/(K+NFkBn): (P53'=P53+1);
+
+
+endmodule 
+	 
+	
